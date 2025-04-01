@@ -1,4 +1,3 @@
-
 /* Base Styles */
 :root {
   --yellow: #ffda22;
@@ -232,8 +231,8 @@ nav ul li a.active::after {
 }
 
 .data-visual {
-  width: 300px;
-  height: 300px;
+  width: 340px;
+  height: 340px;
   background-color: var(--black);
   border-radius: 50%;
   display: flex;
@@ -241,47 +240,104 @@ nav ul li a.active::after {
   align-items: center;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 .chart-container {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  height: 60%;
-  width: 70%;
-  gap: 15px;
+  height: 70%;
+  width: 75%;
+  gap: 12px;
+  position: relative;
+}
+
+.chart-container::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: var(--yellow);
+  box-shadow: 0 0 8px var(--yellow);
+  opacity: 0.8;
+}
+
+.chart-container::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background-color: var(--yellow);
+  box-shadow: 0 0 8px var(--yellow);
+  opacity: 0.8;
 }
 
 .bar {
-  width: 20px;
+  width: 30px;
   background-color: var(--yellow);
   border-radius: 6px 6px 0 0;
   animation: barGrow 2.5s ease forwards;
+  position: relative;
+  box-shadow: 0 0 15px rgba(255, 218, 34, 0.5);
+}
+
+.bar::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background-color: var(--white);
+  border-radius: 50%;
+  opacity: 0;
+  animation: dotAppear 3s ease forwards;
+  animation-delay: 2s;
+}
+
+@keyframes dotAppear {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .bar1 {
   height: 0;
   animation-delay: 0.2s;
+  animation-duration: 2.1s;
 }
 
 .bar2 {
   height: 0;
   animation-delay: 0.4s;
+  animation-duration: 1.8s;
 }
 
 .bar3 {
   height: 0;
   animation-delay: 0.6s;
+  animation-duration: 2.5s;
 }
 
 .bar4 {
   height: 0;
   animation-delay: 0.8s;
+  animation-duration: 2.2s;
 }
 
 .bar5 {
   height: 0;
   animation-delay: 1s;
+  animation-duration: 1.9s;
 }
 
 @keyframes barGrow {
@@ -289,15 +345,15 @@ nav ul li a.active::after {
     height: 0;
   }
   100% {
-    height: 80%;
+    height: var(--bar-height, 80%);
   }
 }
 
-.bar1 { animation-duration: 2.1s; }
-.bar2 { animation-duration: 1.8s; }
-.bar3 { animation-duration: 2.5s; }
-.bar4 { animation-duration: 2.2s; }
-.bar5 { animation-duration: 1.9s; }
+.bar1 { --bar-height: 65%; }
+.bar2 { --bar-height: 85%; }
+.bar3 { --bar-height: 95%; }
+.bar4 { --bar-height: 75%; }
+.bar5 { --bar-height: 80%; }
 
 /* About Section */
 #about {

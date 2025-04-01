@@ -1,122 +1,88 @@
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Mobile navigation toggle
+  // Mobile menu toggle
   const menuToggle = document.querySelector('.menu-toggle');
   const navMenu = document.querySelector('nav ul');
   
-  if(menuToggle && navMenu) {
-    menuToggle.addEventListener('click', function() {
+  if (menuToggle && navMenu) {
+    menuToggle.addEventListener('click', () => {
       navMenu.classList.toggle('show');
     });
   }
   
-  // Navigation active state
-  const sections = document.querySelectorAll('section');
-  const navLinks = document.querySelectorAll('nav ul li a');
-  
-  // Smooth scrolling for anchor links
+  // Smooth scrolling for navigation links
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
+    anchor.addEventListener('click', function (e) {
       e.preventDefault();
       
-      // Close mobile menu if it's open
-      if(navMenu.classList.contains('show')) {
+      if (navMenu && navMenu.classList.contains('show')) {
         navMenu.classList.remove('show');
       }
       
-      const targetId = this.getAttribute('href');
-      if(targetId === '#') return;
-      
-      const targetSection = document.querySelector(targetId);
-      if(targetSection) {
-        targetSection.scrollIntoView({ behavior: 'smooth' });
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth'
+        });
       }
     });
   });
   
-  // Contact form submission
-  const contactForm = document.getElementById('contactForm');
-  if(contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Get form data
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const message = document.getElementById('message').value;
-      
-      // Simple validation
-      if(!name || !email || !message) {
-        alert('Please fill in all fields');
-        return;
-      }
-      
-      // In a real scenario, you'd send this data to a server
-      // For this demo, we'll just show a success message
-      const submitBtn = contactForm.querySelector('button[type="submit"]');
-      const originalText = submitBtn.textContent;
-      
-      submitBtn.textContent = 'Sending...';
-      submitBtn.disabled = true;
-      
-      // Simulate form submission
-      setTimeout(() => {
-        alert(`Thank you, ${name}! Your message has been sent successfully. I'll get back to you soon.`);
-        contactForm.reset();
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-      }, 1500);
-    });
-  }
+  // Active navigation link highlighting
+  const sections = document.querySelectorAll('section');
+  const navLinks = document.querySelectorAll('nav ul li a');
   
-  // Scroll to update active navigation link
-  function updateActiveNavLink() {
-    const scrollPosition = window.scrollY;
+  function setActiveLink() {
+    let current = '';
     
     sections.forEach(section => {
       const sectionTop = section.offsetTop - 100;
-      const sectionHeight = section.offsetHeight;
-      const sectionId = section.getAttribute('id');
+      const sectionHeight = section.clientHeight;
       
-      if(scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-        navLinks.forEach(link => {
-          link.classList.remove('active');
-          if(link.getAttribute('href') === `#${sectionId}`) {
-            link.classList.add('active');
-          }
-        });
+      if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+        current = section.getAttribute('id');
+      }
+    });
+    
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${current}`) {
+        link.classList.add('active');
       }
     });
   }
   
-  window.addEventListener('scroll', updateActiveNavLink);
-  updateActiveNavLink();
+  // Add data visualization animation effects
+  const bars = document.querySelectorAll('.chart-container .bar');
+  const observerOptions = {
+    threshold: 0.5,
+    rootMargin: '0px'
+  };
   
-  // Animation triggers on scroll
-  const skillBars = document.querySelectorAll('.skill-level');
-  
-  function isInViewport(element) {
-    const rect = element.getBoundingClientRect();
-    return (
-      rect.top >= 0 &&
-      rect.left >= 0 &&
-      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-  }
-  
-  function animateOnScroll() {
-    skillBars.forEach(bar => {
-      if(isInViewport(bar) && !bar.style.width) {
-        // Get width from CSS variable or default to calculated width
-        const width = window.getComputedStyle(bar).getPropertyValue('--width') || 
-                      bar.parentElement.getAttribute('data-level') || 
-                      bar.style.width;
-        bar.style.width = width;
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animation = 'none';
+        void entry.target.offsetWidth; // Trigger reflow
+        entry.target.style.animation = `barGrow ${2 + Math.random()}s ease forwards ${Math.random() * 0.5}s`;
       }
+    });
+  }, observerOptions);
+  
+  bars.forEach(bar => {
+    barObserver.observe(bar);
+  });
+  
+  // Form submission handling
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Thank you for your message! I will get back to you soon.');
+      contactForm.reset();
     });
   }
   
-  window.addEventListener('scroll', animateOnScroll);
-  animateOnScroll(); // Run once on page load
+  window.addEventListener('scroll', setActiveLink);
+  setActiveLink();
 });
