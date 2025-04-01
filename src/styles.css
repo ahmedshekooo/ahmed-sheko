@@ -253,30 +253,6 @@ nav ul li a.active::after {
   position: relative;
 }
 
-.chart-container::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background-color: var(--yellow);
-  box-shadow: 0 0 8px var(--yellow);
-  opacity: 0.8;
-}
-
-.chart-container::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 1px;
-  height: 100%;
-  background-color: var(--yellow);
-  box-shadow: 0 0 8px var(--yellow);
-  opacity: 0.8;
-}
-
 .bar {
   width: 30px;
   background-color: var(--yellow);
@@ -307,45 +283,6 @@ nav ul li a.active::after {
   }
   100% {
     opacity: 1;
-  }
-}
-
-.bar1 {
-  height: 0;
-  animation-delay: 0.2s;
-  animation-duration: 2.1s;
-}
-
-.bar2 {
-  height: 0;
-  animation-delay: 0.4s;
-  animation-duration: 1.8s;
-}
-
-.bar3 {
-  height: 0;
-  animation-delay: 0.6s;
-  animation-duration: 2.5s;
-}
-
-.bar4 {
-  height: 0;
-  animation-delay: 0.8s;
-  animation-duration: 2.2s;
-}
-
-.bar5 {
-  height: 0;
-  animation-delay: 1s;
-  animation-duration: 1.9s;
-}
-
-@keyframes barGrow {
-  0% {
-    height: 0;
-  }
-  100% {
-    height: var(--bar-height, 80%);
   }
 }
 
