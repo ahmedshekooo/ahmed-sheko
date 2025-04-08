@@ -1,10 +1,9 @@
-
 import emailjs from '@emailjs/browser';
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Initialize EmailJS
-  // Replace 'YOUR_USER_ID' with your actual EmailJS user ID when using the form
-  emailjs.init('YOUR_USER_ID');
+  // Initialize EmailJS with your public key
+  // You need to replace 'YOUR_PUBLIC_KEY' with your actual EmailJS public key
+  emailjs.init('YOUR_PUBLIC_KEY');
   
   // Mobile menu toggle
   const menuToggle = document.querySelector('.menu-toggle');
@@ -111,7 +110,8 @@ document.addEventListener('DOMContentLoaded', function() {
           message: message
         };
         
-        emailjs.send('service_ahmed', 'YOUR_TEMPLATE_ID', templateParams)
+        // Using the provided service_id "service_ahmed" but you need to provide a valid template_id and public key
+        emailjs.send('service_ahmed', 'template_id', templateParams)
           .then(function() {
             // Create success message
             statusElement = document.createElement('div');
