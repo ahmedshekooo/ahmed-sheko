@@ -81,35 +81,69 @@ document.addEventListener('DOMContentLoaded', function() {
   
   window.addEventListener('scroll', setActiveLink);
   setActiveLink();
-});
 
-// Handle contact form submission via EmailJS
-// This part is replaced by the React component for React environments
-const contactForm = document.getElementById('contactForm');
-if (contactForm) {
-  contactForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const message = document.getElementById('message').value;
-    
-    if (name && email && message) {
-      const templateParams = {
-        from_name: name,
-        reply_to: email,
-        message: message
-      };
+  // Handle contact form submission via EmailJS
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
       
-      emailjs.send('service_ahmed', 'YOUR_TEMPLATE_ID', templateParams)
-        .then(function() {
-          alert('Thank you for your message! I will get back to you soon.');
-          contactForm.reset();
-        }, function(error) {
-          console.error('Error sending message:', error);
-          alert('Failed to send message. Please try again later.');
-        });
-    } else {
-      alert('Please fill in all fields');
-    }
-  });
-}
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+      
+      if (name && email && message) {
+        // Show sending state
+        const submitButton = contactForm.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.textContent;
+        submitButton.textContent = 'Sending...';
+        submitButton.disabled = true;
+        
+        // Clear any existing status messages
+        let statusElement = document.querySelector('.form-status');
+        if (statusElement) {
+          statusElement.remove();
+        }
+        
+        const templateParams = {
+          from_name: name,
+          reply_to: email,
+          message: message
+        };
+        
+        emailjs.send('service_ahmed', 'YOUR_TEMPLATE_ID', templateParams)
+          .then(function() {
+            // Create success message
+            statusElement = document.createElement('div');
+            statusElement.classList.add('form-status', 'success');
+            statusElement.textContent = 'Message sent successfully! I will get back to you soon.';
+            contactForm.insertBefore(statusElement, submitButton);
+            
+            // Reset form
+            contactForm.reset();
+          }, function(error) {
+            console.error('Error sending message:', error);
+            
+            // Create error message
+            statusElement = document.createElement('div');
+            statusElement.classList.add('form-status', 'error');
+            statusElement.textContent = 'Failed to send message. Please try again later.';
+            contactForm.insertBefore(statusElement, submitButton);
+          })
+          .finally(function() {
+            // Reset button state
+            submitButton.textContent = originalButtonText;
+            submitButton.disabled = false;
+          });
+      } else {
+        // Create validation error message
+        const statusElement = document.createElement('div');
+        statusElement.classList.add('form-status', 'error');
+        statusElement.textContent = 'Please fill in all fields';
+        
+        const submitButton = contactForm.querySelector('button[type="submit"]');
+        contactForm.insertBefore(statusElement, submitButton);
+      }
+    });
+  }
+});
