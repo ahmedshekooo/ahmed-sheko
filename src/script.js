@@ -1,5 +1,11 @@
 
+import emailjs from '@emailjs/browser';
+
 document.addEventListener('DOMContentLoaded', function() {
+  // Initialize EmailJS
+  // Replace 'YOUR_USER_ID' with your actual EmailJS user ID when using the form
+  emailjs.init('YOUR_USER_ID');
+  
   // Mobile menu toggle
   const menuToggle = document.querySelector('.menu-toggle');
   const navMenu = document.querySelector('nav ul');
@@ -73,16 +79,37 @@ document.addEventListener('DOMContentLoaded', function() {
     barObserver.observe(bar);
   });
   
-  // Form submission handling
-  const contactForm = document.getElementById('contactForm');
-  if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      alert('Thank you for your message! I will get back to you soon.');
-      contactForm.reset();
-    });
-  }
-  
   window.addEventListener('scroll', setActiveLink);
   setActiveLink();
 });
+
+// Handle contact form submission via EmailJS
+// This part is replaced by the React component for React environments
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+  contactForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+    
+    if (name && email && message) {
+      const templateParams = {
+        from_name: name,
+        reply_to: email,
+        message: message
+      };
+      
+      emailjs.send('service_ahmed', 'YOUR_TEMPLATE_ID', templateParams)
+        .then(function() {
+          alert('Thank you for your message! I will get back to you soon.');
+          contactForm.reset();
+        }, function(error) {
+          console.error('Error sending message:', error);
+          alert('Failed to send message. Please try again later.');
+        });
+    } else {
+      alert('Please fill in all fields');
+    }
+  });
+}

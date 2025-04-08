@@ -1,12 +1,24 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useEffect } from "react";
+import { initEmailJS } from "../utils/emailService";
+import ContactForm from "../components/ContactForm";
 
 const Index = () => {
+  useEffect(() => {
+    // Initialize EmailJS when component mounts
+    // Replace with your actual user ID from EmailJS
+    initEmailJS("YOUR_USER_ID");
+  }, []);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="app-container">
+      {/* The index.html content is served directly */}
+      {/* Add this at the end of the contact form section in index.html: */}
+      {/*
+        <script type="text/javascript">
+          document.getElementById('root').style.display = 'block';
+        </script>
+      */}
     </div>
   );
 };
