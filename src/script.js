@@ -1,3 +1,4 @@
+
 import emailjs from '@emailjs/browser';
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -110,8 +111,8 @@ document.addEventListener('DOMContentLoaded', function() {
           message: message
         };
         
-        // Using the provided service_id "service_ahmed" but you need to provide a valid template_id and public key
-        emailjs.send('service_ahmed', 'template_id', templateParams)
+        // Updated service ID to service_contact
+        emailjs.send('service_contact', 'template_id', templateParams)
           .then(function() {
             // Create success message
             statusElement = document.createElement('div');
