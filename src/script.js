@@ -2,8 +2,8 @@
 import emailjs from '@emailjs/browser';
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Initialize EmailJS with your public key
-  // You need to replace 'YOUR_PUBLIC_KEY' with your actual EmailJS public key
+  // Initialize EmailJS with public key
+  // You need to set your actual EmailJS public key here for it to work
   emailjs.init('YOUR_PUBLIC_KEY');
   
   // Mobile menu toggle
@@ -111,8 +111,8 @@ document.addEventListener('DOMContentLoaded', function() {
           message: message
         };
         
-        // Updated service ID to service_contact
-        emailjs.send('service_contact', 'template_id', templateParams)
+        // Using your provided service_id and template_id
+        emailjs.send('service_contact', 'template_q9wp6ei', templateParams)
           .then(function() {
             // Create success message
             statusElement = document.createElement('div');
